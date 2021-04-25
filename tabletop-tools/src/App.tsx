@@ -1,24 +1,22 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import Button from 'react-bootstrap/Button';
+
+import { AddNarrativeBeatButton } from './narrative/components/AddNarrativeBeatButton';
+import { NarrativeBeatList } from './narrative/components/NarrativeBeatList';
+
+import './App.scss';
+import { INITIAL_STATE } from './narrative/state/constants';
+import { ReducerManager } from './core/state/ReducerManager';
 
 function App() {
+  const defaultProps = INITIAL_STATE;
+  ReducerManager.configureStore({});
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Button variant="primary">Start a narrative</Button>
+      <AddNarrativeBeatButton/>
+      <NarrativeBeatList beats={defaultProps.beats} />
     </div>
   );
 }
