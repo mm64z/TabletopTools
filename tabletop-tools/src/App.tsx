@@ -1,8 +1,10 @@
 import React from 'react';
-import Button from 'react-bootstrap/Button';
+import Col from 'react-bootstrap/Col';
+import Container from 'react-bootstrap/Container';
+import Row from 'react-bootstrap/Row';
+import { FaBars } from 'react-icons/fa';
 
-import { AddNarrativeBeatButton } from './narrative/components/AddNarrativeBeatButton';
-import { NarrativeBeatList } from './narrative/components/NarrativeBeatList';
+import { Grid } from './core/components/Grid';
 
 import './App.scss';
 import { INITIAL_STATE } from './narrative/state/constants';
@@ -14,9 +16,15 @@ function App() {
 
   return (
     <div className="App">
-      <Button variant="primary">Start a narrative</Button>
-      <AddNarrativeBeatButton/>
-      <NarrativeBeatList beats={defaultProps.beats} />
+      <Container>
+        <Row>
+          <Col xs={11}>DM Tools Application</Col>
+          <Col><FaBars/></Col>
+        </Row>
+        <Row>
+          <Grid />
+        </Row>
+      </Container>
     </div>
   );
 }

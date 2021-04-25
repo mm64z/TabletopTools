@@ -5,9 +5,7 @@ import Tooltip from 'react-bootstrap/Tooltip';
 import { FaPlus } from 'react-icons/fa';
 import { v4 as generateUuid } from 'uuid';
 
-import { NarrativeState } from '../state/interfaces';
 import { StateDispatcher } from '../state/StateDispatcher';
-import { NarrativeBeatList } from './NarrativeBeatList';
 
 export class AddNarrativeBeatButton extends React.Component<{}, {}> {
 
