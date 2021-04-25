@@ -1,5 +1,4 @@
-import { ReducerManager } from "../core/state/ReducerManager";
+import { CoreReducerManager } from "../core/constants";
 import { StateHandler } from "./state/StateHandler";
 
-export {};
-ReducerManager.add("narrativeState", StateHandler.updateState);
+CoreReducerManager.add('narrativeStateReducer', StateHandler.updateState);
