@@ -7,6 +7,7 @@ import { FaBars } from 'react-icons/fa';
 import { Grid } from './core/components/Grid';
 
 import './App.scss';
+import SquareGrid from './mapTokens/SquareGrid';
 
 function App() {
   return (
@@ -18,6 +19,9 @@ function App() {
         </Row>
         <Row>
           <Grid />
+        </Row>
+        <Row>
+          <SquareGrid/>
         </Row>
       </Container>
     </div>
