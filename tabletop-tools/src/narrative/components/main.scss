@@ -1,10 +1,22 @@
+@use "sass:list";
+@use "../../core/scss/mixins/input_placeholder.scss" as *;
+
+$transparent: rgb(0,0,0,0);
 $colors: #B0D0D3, #FFCAD4, #C08497, #F7AF9D;
 $fontColor: #FFF;
 
 .Card {
   background: list.nth($colors, 1);
-  color: $fontColor;
   padding: 15px;
+
+  .form-control {
+      background: $transparent;
+      border: none;
+      color: #333;
+      @include inputPlaceholder() {
+        color: $fontColor;
+      }
+  }
 }
 
 .CardTitle {

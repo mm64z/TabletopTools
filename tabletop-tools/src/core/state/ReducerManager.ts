@@ -3,29 +3,30 @@ import { createStore, combineReducers, Store, Reducer } from 'redux';
 export class ReducerManager {
 
   // Create an object which maps keys to reducers
-  private reducers: {[key: string]: Reducer} = { }
+  private reducers: {[key: string]: Reducer};
 
   private combinedReducer;
 
   // An array which is used to delete state keys when reducers are removed
   private keysToRemove: Array<string> = [];
 
-  private store: Store;
+  public store: Store;
 
   constructor (initialState: any, ...reducers: Array<Reducer>) {
+    this.reducers = {};
     // Create the initial combinedReducer
     this.combinedReducer = combineReducers(reducers);
     this.store = createStore(this.reduce, initialState);
   }
 
-  public getReducerMap () {
+  public getReducerMap = () =>  {
     return this.reducers;
   }
 
   // The root reducer function exposed by this object
   // This will be passed to the store
   // @ts-ignore
-  public reduce (state, action) {
+  public reduce = (state, action) => {
     // If any reducers have been removed, clean up their state first
     if (this.keysToRemove.length > 0) {
       state = { ...state };
@@ -40,7 +41,7 @@ export class ReducerManager {
   }
 
   // Adds a new reducer with the specified key
-  public add (key: string, reducer: Reducer) {
+  public add = (key: string, reducer: Reducer) => {
     if (!key || this.reducers[key]) {
       return;
     }
@@ -50,11 +51,11 @@ export class ReducerManager {
 
     // Generate a new combined reducer
     // @ts-ignore
-    this.combinedReducer = combineReducers(reducers);
+    this.combinedReducer = combineReducers(this.reducers);
   }
 
   // Removes a reducer with the specified key
-  public remove (key: string) {
+  public remove = (key: string) => {
     if (!key || !this.reducers[key]) {
       return;
     }
@@ -66,15 +67,15 @@ export class ReducerManager {
     this.keysToRemove.push(key);
 
     // Generate a new combined reducer
-    // @ts-ignore
-    this.combinedReducer = combineReducers(reducers);
+    this.combinedReducer = combineReducers(this.reducers);
   }
 
-  // @ts-ignore
-  public configureStore (initialState) {
+  public configureStore = (initialState) => {
     // Create a store with the root reducer function being the one exposed by the manager.
     if (!this.store) {
       this.store = createStore(this.reduce, initialState);
+    } else {
+      this.store = createStore(this.reduce, {...this.store, ...initialState});
     }
   }
 }

@@ -5,6 +5,8 @@ import Row from 'react-bootstrap/Row';
 import { FaBars } from 'react-icons/fa';
 
 import { Grid } from './core/components/Grid';
+import './narrative';
+import { NarrativeBeatList } from './narrative/components/NarrativeBeatList';
 
 import './App.scss';
 import SquareGrid from './mapTokens/SquareGrid';
@@ -17,12 +19,9 @@ function App() {
           <Col xs={11}>DM Tools Application</Col>
           <Col><FaBars/></Col>
         </Row>
-        <Row>
-          <Grid />
-        </Row>
-        <Row>
-          <SquareGrid/>
-        </Row>
+        <Grid>
+          <NarrativeBeatList/>
+        </Grid>
       </Container>
     </div>
   );
