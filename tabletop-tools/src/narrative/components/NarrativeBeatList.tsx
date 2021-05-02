@@ -24,26 +24,6 @@ class NarrativeBeatListComponent extends React.Component<NarrativeState, Narrati
     this.props = props;
   }
 
-  showCardOrForm (beat: NarrativeBeat) {
-    if (!beat.title && !beat.summary && !beat.outcomes?.length) {
-      return (
-        <div className="Card">
-          <NarrativeForm beat={beat} />
-        </div>
-      );
-    }
-    return this.NarrativeCard(beat);
-  }
-
-  NarrativeCard (beat: NarrativeBeat) {
-    return (
-      <div className="Card">
-        <div className="CardTitle">{beat.title}</div>
-        <div className="CardBody">{beat.summary}</div>
-      </div>
-    );
-  }
-
  render() {
    return (
      <GridItem>
@@ -55,8 +35,8 @@ class NarrativeBeatListComponent extends React.Component<NarrativeState, Narrati
         {this.props.beats.map((beat: NarrativeBeat) => (
           <Row key={beat.id}>
             <Col xs={12}>
-              <div>
-                {this.showCardOrForm(beat)}
+              <div className="Card">
+                <NarrativeForm beat={beat} />
               </div>
             </Col>
           </Row>

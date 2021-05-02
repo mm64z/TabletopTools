@@ -3,7 +3,8 @@
 
 $transparent: rgb(0,0,0,0);
 $colors: #B0D0D3, #FFCAD4, #C08497, #F7AF9D;
-$fontColor: #FFF;
+$lightFontColor: #FFF;
+$darkFontColor: #212529;
 
 .Card {
   background: list.nth($colors, 1);
@@ -12,9 +13,15 @@ $fontColor: #FFF;
   .form-control {
       background: $transparent;
       border: none;
-      color: #333;
+      color: $lightFontColor;
       @include inputPlaceholder() {
-        color: $fontColor;
+        color: $lightFontColor;
+      }
+      &:focus {
+        color: $darkFontColor;
+        @include inputPlaceholder() {
+          color: $darkFontColor;
+        }
       }
   }
 }
