@@ -9,6 +9,7 @@ import './narrative';
 import { NarrativeBeatList } from './narrative/components/NarrativeBeatList';
 
 import './App.scss';
+import SquareGrid from './mapTokens/SquareGrid';
 
 function App() {
   return (

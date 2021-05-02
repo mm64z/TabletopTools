@@ -1,0 +1,11 @@
+.SquareGrid {
+  position: relative;
+  width: 100%;
+  height:800px;
+}
+
+.bgGrid {
+  position: absolute; 
+  left:0;
+  pointer-events: none;
+}
