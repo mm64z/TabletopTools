@@ -2,8 +2,9 @@ import { AnyAction } from 'redux'
 import { StateHelper } from '../../core/state/StateHelper';
 import { NarrativeBeat } from '../interfaces';
 
-import { ActionTypes, INITIAL_STATE } from './constants';
+import { ActionTypes, INITIAL_STATE, COOKIE_PATH } from './constants';
 import { AddNarrativeBeatAction, NarrativeState } from './interfaces';
+import { LocalStorage } from '../../core/utils/LocalStorage'
 
 export class StateHandler {
   public static updateState (state: NarrativeState = INITIAL_STATE, action: AnyAction): NarrativeState {
@@ -18,6 +19,7 @@ export class StateHandler {
           }
           return beat;
         })
+        LocalStorage.set(COOKIE_PATH, updatedList);
         return StateHelper.createNewState(state, {beats: updatedList}) as NarrativeState;
       default:
         return state;
