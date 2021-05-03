@@ -7,7 +7,7 @@ interface NarrativeFormData {
   beat: NarrativeBeat;
 }
 
-export class NarrativeForm extends React.Component {
+export class NarrativeForm extends React.Component<NarrativeFormData, NarrativeFormData> {
   // @ts-ignore
   public state: NarrativeFormData;
 

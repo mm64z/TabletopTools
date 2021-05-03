@@ -16,7 +16,7 @@ interface NarrativeBeatListProps {
   beats: Array<NarrativeBeat>;
 }
 
-class NarrativeBeatListComponent extends React.Component<NarrativeState, NarrativeBeatListProps> {
+class NarrativeBeatListComponent extends React.Component<NarrativeBeatListProps, NarrativeBeatListProps> {
   public props: NarrativeBeatListProps = { beats: [] };
 
   constructor (props: NarrativeBeatListProps) {

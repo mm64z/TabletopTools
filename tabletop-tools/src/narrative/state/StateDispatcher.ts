@@ -1,7 +1,6 @@
 import { CoreReducerManager } from '../../core/constants';
 import { NarrativeBeat } from '../interfaces';
 import { ActionTypes } from './constants';
-import { AddNarrativeBeatAction } from './interfaces';
 
 export class StateDispatcher {
 

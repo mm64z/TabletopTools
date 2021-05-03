@@ -8,16 +8,21 @@ export class LocalStorage {
       stringifiedData = JSON.stringify(data);
     }
     if (expirationInDays) {
-      Cookies.set(key, stringifiedData || data, {expires: expirationInDays});
+      // @ts-ignore
+      Cookies.set(key, stringifiedData || data , {expires: expirationInDays});
       return;
     }
+      // @ts-ignore
     Cookies.set(key, stringifiedData || data);
   }
 
-  public static read<T = any> (key: string): T {
-    const value = Cookies.get(key);
+  public static read<T = any> (key: string): T | undefined {
+    const value: T | string | undefined = Cookies.get(key) as T | string;
+    if (value === undefined) {
+      return value;
+    }
     try {
-      const destringifiedData = JSON.parse(value);
+      const destringifiedData = JSON.parse(value as string);
       if (destringifiedData instanceof Object) {
         return destringifiedData as T;
       }
