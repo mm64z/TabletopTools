@@ -1,6 +1,7 @@
 import React from 'react';
 import Col from 'react-bootstrap/Col';
 import Container from 'react-bootstrap/Container';
+import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
 import { connect } from 'react-redux';
 
@@ -11,17 +12,40 @@ import { AddNarrativeBeatButton } from './AddNarrativeBeatButton';
 import { NarrativeForm } from './NarrativeForm';
 
 import './main.scss';
+import { INITIAL_STATE } from '../state/constants';
+import { StateDispatcher } from '../state/StateDispatcher';
 
-interface NarrativeBeatListProps {
+interface NarrativeBeatListProps { // Read-only
   beats: Array<NarrativeBeat>;
+  title: string;
 }
 
-class NarrativeBeatListComponent extends React.Component<NarrativeBeatListProps, NarrativeBeatListProps> {
-  public props: NarrativeBeatListProps = { beats: [] };
+interface NarrativeBeatListState { // Write-only
+  title: string;
+}
+
+class NarrativeBeatListComponent extends React.Component<NarrativeBeatListProps, NarrativeBeatListState> {
+  public props: NarrativeBeatListProps;
+  public state: NarrativeBeatListState;
 
   constructor (props: NarrativeBeatListProps) {
     super (props);
     this.props = props;
+    this.state = {
+      title: props.title
+    };
+    this.onTitleChange = this.onTitleChange.bind(this);
+    this.saveOnBlur = this.saveOnBlur.bind(this);
+  }
+
+  onTitleChange (event: React.ChangeEvent<HTMLInputElement>) {
+    this.setState({
+      title: event.target.value
+    });
+  }
+
+  saveOnBlur () {
+    StateDispatcher.updateTitle(this.state.title);
   }
 
  render() {
@@ -29,7 +53,10 @@ class NarrativeBeatListComponent extends React.Component<NarrativeBeatListProps,
      <GridItem>
        <Container fluid>
        <Row>
-         <Col xs={11}>Your arc title</Col>
+         <Col xs={11}>
+         <Form.Control type="input" placeholder="Title this arc" value={this.state.title}
+                       onChange={this.onTitleChange} onBlur={this.saveOnBlur}/>
+         </Col>
          <Col xs={1}><AddNarrativeBeatButton/></Col>
        </Row>
         {this.props.beats.map((beat: NarrativeBeat) => (
@@ -47,14 +74,16 @@ class NarrativeBeatListComponent extends React.Component<NarrativeBeatListProps,
  }
 }
 
-const mapStateToProps = (state: { narrative: NarrativeState }): NarrativeBeatListProps => {
-  if (state.narrative) {
+const mapStateToProps = (externalState: { narrative: NarrativeState }): NarrativeBeatListProps => {
+  if (externalState.narrative) {
     return {
-      beats: state.narrative.beats
+      title: externalState.narrative.title,
+      beats: externalState.narrative.beats
     };
   }
   return {
-    beats: []
+    title: INITIAL_STATE.title,
+    beats: INITIAL_STATE.beats
   }
 }
 
