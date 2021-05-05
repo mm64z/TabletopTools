@@ -1,5 +1,10 @@
 import React from 'react';
+import Button from 'react-bootstrap/Button';
+import Col from 'react-bootstrap/Col';
+import Row from 'react-bootstrap/Row';
 import Form from 'react-bootstrap/Form';
+import { FaTimes } from 'react-icons/fa';
+
 import { NarrativeBeat } from '../interfaces';
 import { StateDispatcher } from '../state/StateDispatcher';
 
@@ -42,13 +47,26 @@ export class NarrativeForm extends React.Component<NarrativeFormData, NarrativeF
     StateDispatcher.updateNarrativeBeat(beat);
   }
 
+  removeBeat (beat: NarrativeBeat) {
+    StateDispatcher.removeNarrativeBeat(beat);
+  }
+
  render() {
    return (
      <div className="NarrativeForm text-left">
        <Form>
-         <Form.Control type="input" placeholder="Title" value={this.state.beat.title}
-                       onChange={this.onTitleChange} onBlur={this.saveOnBlur}/>
-         <Form.Control type="textarea" placeholder="Describe what happens in this plot beat" value={this.state.beat.summary}
+         <Row>
+           <Col xs={11}>
+             <Form.Control as="input" placeholder="Title" value={this.state.beat.title}
+                           onChange={this.onTitleChange} onBlur={this.saveOnBlur}/>
+           </Col>
+           <Col xs={1} className="text-right text-light">
+            <Button onClick={() => this.removeBeat(this.state.beat)}>
+              <FaTimes/>
+            </Button>
+           </Col>
+         </Row>
+         <Form.Control as="textarea" rows={5} placeholder="Describe what happens in this plot beat" value={this.state.beat.summary}
                        onChange={this.onSummaryChange} onBlur={this.saveOnBlur}/>
        </Form>
      </div>

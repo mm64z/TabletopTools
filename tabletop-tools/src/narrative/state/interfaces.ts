@@ -7,5 +7,6 @@ export interface AddNarrativeBeatAction {
 }
 
 export interface NarrativeState {
+  title: string;
   beats: Array<NarrativeBeat>;
 }

@@ -1,13 +1,14 @@
 import { AnyAction } from 'redux'
-import { StateHelper } from '../../core/state/StateHelper';
-import { NarrativeBeat } from '../interfaces';
 
 import { ActionTypes, INITIAL_STATE, COOKIE_PATH } from './constants';
 import { AddNarrativeBeatAction, NarrativeState } from './interfaces';
+import { NarrativeBeat } from '../interfaces';
 import { LocalStorage } from '../../core/utils/LocalStorage'
+import { StateHelper } from '../../core/state/StateHelper';
 
 export class StateHandler {
   public static updateState (state: NarrativeState = INITIAL_STATE, action: AnyAction): NarrativeState {
+    let newState: NarrativeState;
     switch(action.type) {
       case ActionTypes.AddNarrativeBeat:
         const newBeatsList = state.beats.concat([(action as AddNarrativeBeatAction).beat]);
@@ -19,8 +20,20 @@ export class StateHandler {
           }
           return beat;
         })
-        LocalStorage.set(COOKIE_PATH, updatedList);
-        return StateHelper.createNewState(state, {beats: updatedList}) as NarrativeState;
+        newState = StateHelper.createNewState(state, {beats: updatedList}) as NarrativeState;
+        LocalStorage.set(COOKIE_PATH, newState);
+        return newState;
+      case ActionTypes.RemoveNarrativeBeat:
+        const prunedList = state.beats.filter((beat: NarrativeBeat) => {
+          return beat.id != action.beat.id;
+        });
+        newState = StateHelper.createNewState(state, {beats: prunedList}) as NarrativeState;
+        LocalStorage.set(COOKIE_PATH, newState);
+        return newState;
+      case ActionTypes.UpdateTitle:
+        newState = StateHelper.createNewState(state, {title: action.title}) as NarrativeState;
+        LocalStorage.set(COOKIE_PATH, newState);
+        return newState;
       default:
         return state;
     }
