@@ -1,5 +1,3 @@
-import Cookies from 'js-cookie';
-
 export class LocalStorage {
 
   public static set<T = any> (key: string, data: T, expirationInDays?: number): void {
@@ -7,17 +5,18 @@ export class LocalStorage {
     if (data instanceof Object) {
       stringifiedData = JSON.stringify(data);
     }
+    /* localStorage doesn't use expiration
     if (expirationInDays) {
       // @ts-ignore
       Cookies.set(key, stringifiedData || data , {expires: expirationInDays});
       return;
-    }
+    }*/
       // @ts-ignore
-    Cookies.set(key, stringifiedData || data);
+    localStorage.setItem(key, stringifiedData || data);
   }
 
   public static read<T = any> (key: string): T | undefined {
-    const value: T | string | undefined = Cookies.get(key) as T | string;
+    const value: T | string | undefined = localStorage.getItem(key) as T | string;
     if (value === undefined) {
       return value;
     }
