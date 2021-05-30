@@ -9,10 +9,12 @@ class SquareGrid extends React.Component {
 
   public state: {
     dragArrowStart: Position,
+    dragArrowEstablishedPoints: Position[],
     dragArrowCurrent: Position,
     dragArrowDragging: boolean
   } = {
     dragArrowStart: {x: 0, y:0},
+    dragArrowEstablishedPoints: [],
     dragArrowCurrent: {x: 0, y:0},
     dragArrowDragging: false,
   };
@@ -21,6 +23,7 @@ class SquareGrid extends React.Component {
     super(props);
     this.setState({
       dragArrowStart: {x: 0, y:0},
+      dragArrowEstablishedPoints: [],
       dragArrowCurrent: {x: 0, y:0},
       dragArrowDragging: false,
     });
@@ -38,7 +41,10 @@ class SquareGrid extends React.Component {
   startMovement = ( e: RndDragEvent, data: DraggableData): void => {
     console.log("start ", data.x, data.y);
      this.setState({
+       // some adjustment is needed as data reports start of gridSize
+       // TODO: adjustment based on gridSize
       dragArrowStart: {x: data.x+32, y: data.y+32},
+      dragArrowEstablishedPoints: [{x: data.x+32, y: data.y+32}],
       dragArrowCurrent: {x: data.x+32, y: data.y+32},
       dragArrowDragging: true
     });
@@ -57,6 +63,21 @@ class SquareGrid extends React.Component {
     });
   }
 
+  handleContextMenu = (e: MouseEvent) => {
+    console.log("RIGHT ", e.x, e.y);
+    e.preventDefault();
+    console.log(e);
+    // if dragging, set a waypoint
+    if (this.state.dragArrowDragging) {
+      this.setState({
+        dragArrowEstablishedPoints: this.state.dragArrowEstablishedPoints.concat({
+          x: e.pageX,
+          y: e.pageY
+        })
+      })
+    }
+  }
+
   calcDistance (xSquares: number, ySquares: number) {
     const diagonalSquares = Math.min(xSquares, ySquares);
     const straightSquares = Math.max(xSquares, ySquares) - diagonalSquares;
@@ -71,6 +92,13 @@ class SquareGrid extends React.Component {
     const ySquares = Math.abs(this.state.dragArrowCurrent.y-this.state.dragArrowStart.y)/gridSize;
     const xSquares = Math.abs(this.state.dragArrowCurrent.x-this.state.dragArrowStart.x)/gridSize;
     const distance = this.calcDistance(xSquares, ySquares);
+    // pointlist is x1,y1, ... xn, yn for all points on line (inc current mouse pos)
+    const pointList = this.state.dragArrowEstablishedPoints.concat(this.state.dragArrowCurrent)
+      .reduce((acc: Array<number>, curr: Position) => {
+        acc.push(curr.x);
+        acc.push(curr.y);
+        return acc;
+      }, []);
     return (
       <div className="SquareGrid" style={{position: 'relative', width:'100%',height:'800px'}}>
 
@@ -108,6 +136,7 @@ class SquareGrid extends React.Component {
           </defs>
           {this.state.dragArrowDragging ?
           <g>
+            <polyline points={pointList.toString()}/>
             <line x1={this.state.dragArrowStart.x} y1={this.state.dragArrowStart.y}
                 x2={this.state.dragArrowCurrent.x} y2={this.state.dragArrowCurrent.y}
                 style={{stroke:'rgb(0,0,0)', strokeWidth:'2'}}
