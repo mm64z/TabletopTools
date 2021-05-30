@@ -10,6 +10,7 @@ import { NarrativeBeatList } from './narrative/components/NarrativeBeatList';
 
 import './App.scss';
 import SquareGrid from './mapTokens/SquareGrid';
+import { LocalStorage } from './core/utils/LocalStorage';
 
 interface AppState {
   gridOn: boolean;
@@ -25,22 +26,26 @@ class App extends React.Component<any,AppState> {
   state: AppState;
   constructor(props) {
     super(props);
-    this.state = {
+    this.state = LocalStorage.read('lastState') || {
       narrativeOn: true,
       gridOn: false
     };
   }
 
   activateGrid = () => {
-    this.setState(Object.assign({}, stateOff, {
+    const newState = Object.assign({}, stateOff, {
       gridOn: true
-    }));
+    })
+    this.setState(newState);
+    LocalStorage.set('lastState', newState)
   }
 
   activateNarrative = () => {
-    this.setState(Object.assign({}, stateOff, {
+    const newState = Object.assign({}, stateOff, {
       narrativeOn: true
-    }));
+    })
+    this.setState(newState);
+    LocalStorage.set('lastState', newState)
   }
 
   render() {
